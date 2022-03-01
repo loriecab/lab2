@@ -48,7 +48,7 @@ void DeleteList(str* node) {
 }
 
 int main() {
-	int n;
+	int n, res = 1;
 	char trash;
 
 	while (1) {
@@ -59,7 +59,7 @@ int main() {
 			printf("first element: %d\n", begin->num);
 			while(1) {
 				printf("adding element/elements - 1\noutput elements - 2\ndeleting all elements - 3\n");
-				if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {	
+				if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {
 					if (n == 1) {
 						system("clear");
 						while(1) {
@@ -69,12 +69,12 @@ int main() {
 								if (trash == '\n')
 									break;
 							} else {
-								printf("n/a");
+								res = 0;
 								break;
 							}
 							if (trash == '\n') {
 								break;
-							}		
+							}	
 						}
 						system("clear");
 					} else if (n == 2) {
@@ -86,18 +86,35 @@ int main() {
 						printf("all items removed\n");
 						break;
 				 	} else {
-						printf("n/a");
+						res = 0;
 						break;
 					}
+					
 				} else {
-					printf("n/a");
+					res = 0;
+					break;
+				}
+				if (res == 0) {
+					break;
 				}
 			}
-		}
-		printf("create a list again? any key/n: ");
-		if (scanf("%c", &trash) == 1 && trash == 'n') {
+		} else {
+			res = 0;
 			break;
 		}
+		if (res == 1) {	
+			printf("create a list again? any key/n: ");
+			if (scanf("%c", &trash) == 1 && trash == 'n') {
+				break;
+			}
+		} else {
+			system("clear");
+			break;
+		}
+	}
+	if (res == 0) {
+		system("clear");
+		printf("n/a");
 	}
 	return 0;
 }
