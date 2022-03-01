@@ -34,10 +34,12 @@ void push(str* node, int n) {
 }
 
 void out(str* node) {
+	str* sec = node;
 	while(1) {
 		if (sec->second == NULL) {
 			break;
 		}
+		printf(" %d", sec->num);
 		sec = sec->second;
 	}
 }
@@ -63,6 +65,8 @@ int main() {
 				} else {
 					printf("n/a");
 				}
+			} else if (n==2) {
+				out(begin);
 			}
 		}
 
