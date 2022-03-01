@@ -67,6 +67,10 @@ int main() {
 				}
 			} else if (n==2) {
 				out(begin);
+				break;
+			}else {
+				printf("n/a");
+				break;
 			}
 		}
 
