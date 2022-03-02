@@ -47,57 +47,174 @@ void DeleteList(str* node) {
 	free(sec);
 }
 
-int main() {
-	int n, res = 1;
-	char trash;
+void DeleteElement(str* node, int n) {
+	str* sec = node;
+	str* ptr;
+	int i = 0;
+	int j = 0;
+	int res = 1;
+	sec = sec->second->second;
 
+	while(sec != node->second) {
+		sec = sec->second;
+		i++;
+	}
+	i++;
+	while (1) {
+		if (n == sec->num) {
+			break;
+		} else if (j == i) {
+			res = 0;
+			break;
+		}
+		ptr = sec;
+		sec = sec->second;
+		j++;
+	}
+	if (res) {
+		ptr->second = sec->second;
+		free(sec);
+	}
+}
+
+void addElement(str* node, int n) {
+	str* sec = node;
+	int num, res = 1;
+	char trash;
+	while (n != sec->num) {
+		sec = sec->second;
+		if (sec == node) {
+			res = 0;
+			break;
+		}
+	}
+	if (res) {
+		printf("enter the value of the added element: "); 
+		if (scanf("%d%c", &num, &trash) == 2 && trash == '\n') {
+			str* ptr = (str*)malloc(sizeof(str));
+			ptr->second = sec->second;
+			sec->second = ptr;
+			ptr->num = num;
+		}
+	} else {
+		printf("element not found \n");
+	}
+}
+
+
+void printMenu() {
+	printf("adding element/elements - 1");
+	printf("\noutput elements         - 2");
+	printf("\ndeleting all elements   - 3");
+	printf("\ndeleting an element     - 4");
+	printf("\nadding an element       - 5\n");
+}
+
+void choice1(int* res, str* begin) {
+	int n;
+	char trash;
+	system("clear");
+	while(1) {
+		if (scanf("%d%c", &n, &trash) == 2 && 
+			(trash == ' ' || trash == '\n')) {
+			push(begin, n);
+			if (trash == '\n')
+				break;
+		} else {
+			*res = 0;
+			break;
+		}
+		if (trash == '\n') {
+			break;
+		}	
+	}
+	system("clear");
+}
+
+void choice2(str* begin) {
+	system("clear");
+	out(begin);
+}
+
+void choice3(str* begin) {
+	system("clear");
+	DeleteList(begin);
+	printf("all items removed\n");
+}
+
+void choice4(str* begin, int* res) {
+	int n;
+	char trash;
+	system("clear");
+	printf("enter the value of the element to be removed: ");
+	if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {
+		DeleteElement(begin, n);
+	} else {
+		*res = 0;
+	}
+}
+
+void choice5(str* begin, int* res) {
+	int n;
+	char trash;
+	system("clear");
+	printf("enter the value of the element: ");
+	if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {
+		addElement(begin, n);
+	} else {
+		*res = 0;
+	}
+}
+
+void BeginInput(str* begin, int* res) {
+	int n;
+	char trash;
+	system("clear");
+	printf("first element: %d\n", begin->num);
+	while(1) {
+		printMenu();
+		if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {
+			if (n == 1) {
+				choice1(&*res,  begin);
+			} else if (n == 2) {
+				choice2(begin);
+			} else if (n == 3) {
+				choice3(begin);
+				break;
+			} else if (n == 4) {
+				choice4(begin, &*res);
+			} else if (n == 5) {
+				choice5(begin, &*res);
+		 	} else {
+				res = 0;
+				break;
+			}
+		} else {
+			*res = 0;
+			break;
+		}
+		if (*res == 0) {
+			break;
+		}
+	}
+}
+
+void checkRes(int res) {
+	if (res == 0) {
+		system("clear");
+		printf("n/a");
+	}
+}
+
+void mainWhile() {
+	int n;
+	char trash;
+	int res = 1;
 	while (1) {
 		printf("creating the first node: ");
 		if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {
 			str* begin = CreateNode(n);
-			system("clear");
-			printf("first element: %d\n", begin->num);
-			while(1) {
-				printf("adding element/elements - 1\noutput elements - 2\ndeleting all elements - 3\n");
-				if (scanf("%d%c", &n, &trash) == 2 && trash == '\n') {
-					if (n == 1) {
-						system("clear");
-						while(1) {
-							if (scanf("%d%c", &n, &trash) == 2 && 
-								(trash == ' ' || trash == '\n')) {
-								push(begin, n);
-								if (trash == '\n')
-									break;
-							} else {
-								res = 0;
-								break;
-							}
-							if (trash == '\n') {
-								break;
-							}	
-						}
-						system("clear");
-					} else if (n == 2) {
-						system("clear");
-						out(begin);
-					} else if (n == 3) {
-						system("clear");
-						DeleteList(begin);
-						printf("all items removed\n");
-						break;
-				 	} else {
-						res = 0;
-						break;
-					}
-					
-				} else {
-					res = 0;
-					break;
-				}
-				if (res == 0) {
-					break;
-				}
-			}
+			BeginInput(begin, &res);
 		} else {
 			res = 0;
 			break;
@@ -112,9 +229,11 @@ int main() {
 			break;
 		}
 	}
-	if (res == 0) {
-		system("clear");
-		printf("n/a");
-	}
+	checkRes(res);
+}
+
+
+int main() {
+	mainWhile();
 	return 0;
 }
